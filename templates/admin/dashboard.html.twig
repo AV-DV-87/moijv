@@ -1,12 +1,51 @@
-{% extends "base.html.twig" %}
+{% extends "admin/layout_admin.html.twig" %}
 
 {% block body %}
-    <h1>MoiJV</h1>
-    <a href="{{ path('logout')}}">Deconnexion</a>
-    <h2>Liste des utilisateurs</h2>
-    <ul>
-        {%for user in users%}
-            <li>{{user.username}} {{user.email}}</li>
-        {%endfor%}
-    </ul>
+    <!-- Tableau des utilisateurs -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Data Table Example</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Nom d'utilisateur</th>
+                  <th>Email</th>
+                  <th>Date d'inscription</th>
+                  <th>Rôles</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nom d'utilisateur</th>
+                  <th>Email</th>
+                  <th>Date d'inscription</th>
+                  <th>Rôles</th>
+                  <th>Actions</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.registerDate | date('d/m/Y') }}</td>
+                  <td>{% for role in user.roles %}{{ role }}{% endfor %}</td>
+                  {# on va chercher delete user et on passe dans un tableau twig le param user.id #}
+                  <td><a class="btn btn-danger" href="{{ path('delete_user', {'id' : user.id}) }}">
+                          <i class="fa fa-trash"></i>
+                      </a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
 {% endblock %}
