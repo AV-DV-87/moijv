@@ -1,12 +1,21 @@
 <?php
 
 namespace App\Entity;
+//on utilise tout le namespace constraints avec l'alias Assert
+//il permet d'implémenter la validation des formulaires
 
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User implements UserInterface, \Serializable
 {
@@ -19,16 +28,19 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\Length (min=2, max=50)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length (min=5, max=50)
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -41,15 +53,24 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=100)
      */
     private $roles;
+        
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="Owner")
+     * @var Collection products
+     */
+    //one to many créer une relation 1-n entre table product et user
+    private $products;
     
+    public function __construct() {
+        $this->products = new ArrayCollection();
+    }
     
-
-        public function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getUsername()
     {
         return $this->username;
     }
@@ -61,7 +82,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -73,7 +94,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -85,7 +106,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getRegisterDate(): \DateTimeInterface
+    public function getRegisterDate()
     {
         return $this->registerDate;
     }
@@ -142,5 +163,12 @@ class User implements UserInterface, \Serializable
             // $this->salt
         ) = unserialize($serialized);
     }
+    
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    
 
 }

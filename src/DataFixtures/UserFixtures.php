@@ -20,6 +20,9 @@ class UserFixtures extends Fixture
             $user->setEmail('user'.$i.'@fake.fr');
             $user->setRegisterDate(new \DateTime('-'.$i.' days'));
             $user->setRoles('ROLE_USER');
+            //addReference garde en reference le $user sous un certain nom
+            //de façon à le rendre disponible dans les autres fixtures
+            $this->addReference('user'.$i, $user);
 //            demande à doctrine de préparer l'insertion de l'entité en BDD donc
 //            donc un array avec toutes les requêtes qui seront exécutés en flush
             $manager->persist($user);

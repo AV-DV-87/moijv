@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
     return $this->render("home.html.twig"); 
     }
+    
+    //PRODUCT ACTIONS
+    
+   
+    
 }
