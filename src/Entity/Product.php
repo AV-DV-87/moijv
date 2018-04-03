@@ -3,20 +3,23 @@
 namespace App\Entity;
 
 //pour la création de l'entité en BDD
-use Doctrine\ORM\Mapping as ORM;
 
 //vérifie les saisies et leurs validations
-use Symfony\Component\Validator\Constraints as Assert;
 
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @UniqueEntity("title")
  * 
  */
-class Product
-{
+class Product {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -35,42 +38,54 @@ class Product
      * @Assert\Length (min=15)
      */
     private $description;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Product")
      * @var User Owner
      */
     private $owner;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
+     * @var Collection
+     */
+    private $tags;
+    public function __construct() {
+        $this->tags = new ArrayCollection();
+    }
 
-    public function getId()
-    {
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"insertion"})
+     * @var object
+     * @Assert\Image(maxSize = "2M",minWidth="200", minHeight="200")
+     */
+    private $image;
+
+    public function getId() {
         return $this->id;
     }
 
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
+    public function setTitle(string $title): self {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
-    {
+    public function setDescription(string $description): self {
         $this->description = $description;
 
         return $this;
     }
-    
+
     public function getOwner(): User {
         return $this->owner;
     }
@@ -78,6 +93,19 @@ class Product
     public function setOwner(User $owner) {
         $this->owner = $owner;
         return $this;
+    }
+
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function setImage($image) {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getTags(): Collection {
+        return $this->tags;
     }
 
 

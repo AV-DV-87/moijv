@@ -21,6 +21,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                     . 'Donec molestie, augue in lobortis euismod, enim nisl molestie ligula, '
                     . 'eu fringilla.');
             $product->setOwner($this->getReference('user' . rand(0, 59)));
+            //url relative qui sera complétée par la méthode asset
+            $product->setImage('uploads/500x325.png');
             $manager->persist($product);
         }
         $manager->flush();

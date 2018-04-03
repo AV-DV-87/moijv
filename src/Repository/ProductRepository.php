@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -28,10 +30,27 @@ class ProductRepository extends ServiceEntityRepository {
         //lien doctrine et Pager Fanta
         $adapter = new DoctrineORMAdapter($queryBuilder);
         //Pager Fanta
-        $pager = new \Pagerfanta\Pagerfanta($adapter);
+        $pager = new Pagerfanta($adapter);
         //défini la page courante donc le nombre passé en argument
         return $pager->setMaxPerPage(12)->setCurrentPage($page);
     }
+    
+    //detecte la pagination en fonction de l'utilisateur connecté
+    public function findPaginatedByUser(User $user, $page = 1)
+    {
+        //CONSTRUCTION D'UNE REQUETE  et alias pour la table produit = p
+        $queryBuilder = $this->createQueryBuilder('p')
+                ->leftJoin('p.owner', 'u')
+                ->where('u = :user')
+                ->setParameter('user', $user)
+                ->orderBy('p.id', 'ASC');
+        //lien doctrine et Pager Fanta
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+        //Pager Fanta
+        $pager = new Pagerfanta($adapter);
+        //défini la page courante donc le nombre passé en argument
+        return $pager->setMaxPerPage(12)->setCurrentPage($page);
+    }  
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

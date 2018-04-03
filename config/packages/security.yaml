@@ -41,4 +41,6 @@ security:
     access_control:
         #permete de bloquer l'accès à l'espace admin
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/product, roles: ROLE_USER }
+        
         # - { path: ^/profile, roles: ROLE_USER }
