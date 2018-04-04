@@ -23,6 +23,10 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             $product->setOwner($this->getReference('user' . rand(0, 59)));
             //url relative qui sera complétée par la méthode asset
             $product->setImage('uploads/500x325.png');
+            for($j = 0; $j <rand(0,4); $j++){
+                $tag = $this->getReference('tag'.rand(0,39));
+                $product->addTag($tag);
+            }
             $manager->persist($product);
         }
         $manager->flush();
@@ -30,7 +34,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array {
         return [
-            UserFixtures::class
+            UserFixtures::class,
+            TagFixtures::class
         ];
     }
 

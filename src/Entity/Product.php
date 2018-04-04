@@ -34,22 +34,23 @@ class Product {
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", )
      * @Assert\Length (min=15)
      */
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="Product")
-     * @var User Owner
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
+     * @var User owner
      */
     private $owner;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="products")
      * @var Collection
      */
     private $tags;
+    
     public function __construct() {
         $this->tags = new ArrayCollection();
     }
@@ -107,6 +108,16 @@ class Product {
     public function getTags(): Collection {
         return $this->tags;
     }
-
+    
+    //Add a tag with a verification
+    //si le tags contient déjà le tag concerné stop it
+    public function addTag($tag){
+        if($this->tags->contains($tag)){
+            return;
+        }
+        $this->tags->add($tag);
+        //on ajoute le produit courant au tag
+        $tag->getProducts()->add($this);
+    }
 
 }

@@ -27,7 +27,7 @@ class ProductController extends Controller {
 
         $productsList = $productRepo->findPaginatedByUser($this->getUser(), $page);
 
-        return $this->render('product/list_product.html.twig', [
+        return $this->render('product/index.html.twig', [
                     'products' => $productsList
         ]);
     }
@@ -96,6 +96,8 @@ class ProductController extends Controller {
         return $this->render('product/edit_product.html.twig', [
                     'form' => $formProduct->createView(),
         ]);
+        
     }
+    
 
 }

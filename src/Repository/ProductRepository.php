@@ -26,7 +26,12 @@ class ProductRepository extends ServiceEntityRepository {
     public function findPaginated($page = 1) 
     {
         //CONSTRUCTION D'UNE REQUETE  et alias pour la table produit = p
-        $queryBuilder = $this->createQueryBuilder('p')->orderBy('p.id', 'ASC');
+        $queryBuilder = $this->createQueryBuilder('p')
+                ->leftJoin('p.owner', 'u')
+                ->addSelect('u')
+                ->innerJoin('p.tags', 't')
+                ->addSelect('t')
+                ->orderBy('p.id', 'ASC');
         //lien doctrine et Pager Fanta
         $adapter = new DoctrineORMAdapter($queryBuilder);
         //Pager Fanta
@@ -41,6 +46,9 @@ class ProductRepository extends ServiceEntityRepository {
         //CONSTRUCTION D'UNE REQUETE  et alias pour la table produit = p
         $queryBuilder = $this->createQueryBuilder('p')
                 ->leftJoin('p.owner', 'u')
+                ->addSelect('u')
+                ->innerJoin('p.tags', 't')
+                ->addSelect('t')
                 ->where('u = :user')
                 ->setParameter('user', $user)
                 ->orderBy('p.id', 'ASC');

@@ -1,6 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "layout_front.html.twig" %}
 
 {% block body %}
     <h1>MoiJV</h1>
-    <h2>Bienvenue sur la page d'accueil</h2>
+    <h2>Bienvenue sur la page d'accueil !</h2>
+    
+    {% include 'incs/list_product.html.twig' with { 'products' : products, 'routeName' : 'home_paginated'} %}
+    
 {% endblock %}

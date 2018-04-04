@@ -20,14 +20,17 @@ class HomeController extends Controller
     
     /**
      * @Route("/home", name="home")
+     * @Route("/home/{page}", name="home_paginated")
      */
-    public function index(UserRepository $userRepo)
+    public function index(\App\Repository\ProductRepository $productRepo, $page=1)
     {
-    return $this->render("home.html.twig"); 
-    }
-    
-    //PRODUCT ACTIONS
-    
+        //Model query to get product + fanta pagination
+        $products = $productRepo->findPaginated($page);
+        //Send to a template
+        return $this->render("home.html.twig",[
+            'products' => $products
+        ]); 
+    }  
    
     
 }

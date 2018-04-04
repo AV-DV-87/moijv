@@ -55,7 +55,7 @@ class User implements UserInterface, \Serializable
     private $roles;
         
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="Owner")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="owner")
      * @var Collection products
      */
     //one to many créer une relation 1-n entre table product et user
