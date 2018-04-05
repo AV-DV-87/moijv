@@ -46,7 +46,7 @@ class Product {
     private $owner;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="products", cascade="persist")
      * @var Collection
      */
     private $tags;
@@ -108,7 +108,11 @@ class Product {
     public function getTags(): Collection {
         return $this->tags;
     }
-    
+    public function setTags(Collection $tags) {
+        $this->tags = $tags;
+        return $this;
+    }
+        
     //Add a tag with a verification
     //si le tags contient déjà le tag concerné stop it
     public function addTag($tag){

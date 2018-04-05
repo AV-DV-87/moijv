@@ -10,7 +10,8 @@
               <p class="card-text">{{ product.description }}</p>
               <div>
                   {% for tag in product.tags %}
-                      <span class="badge badge-pill badge-info">#{{ tag.name }}</span>
+                      <a class="badge badge-pill badge-info" href="{{ path('tag',{'slug' : tag.slug}) }}">
+                          #{{ tag.name }}</a>
                   {% endfor %}
               </div>
             </div>

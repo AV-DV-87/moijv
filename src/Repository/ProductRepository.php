@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -29,7 +30,7 @@ class ProductRepository extends ServiceEntityRepository {
         $queryBuilder = $this->createQueryBuilder('p')
                 ->leftJoin('p.owner', 'u')
                 ->addSelect('u')
-                ->innerJoin('p.tags', 't')
+                ->leftJoin('p.tags', 't')
                 ->addSelect('t')
                 ->orderBy('p.id', 'ASC');
         //lien doctrine et Pager Fanta
@@ -47,10 +48,30 @@ class ProductRepository extends ServiceEntityRepository {
         $queryBuilder = $this->createQueryBuilder('p')
                 ->leftJoin('p.owner', 'u')
                 ->addSelect('u')
-                ->innerJoin('p.tags', 't')
+                ->leftJoin('p.tags', 't')
                 ->addSelect('t')
                 ->where('u = :user')
                 ->setParameter('user', $user)
+                ->orderBy('p.id', 'ASC');
+        //lien doctrine et Pager Fanta
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+        //Pager Fanta
+        $pager = new Pagerfanta($adapter);
+        //défini la page courante donc le nombre passé en argument
+        return $pager->setMaxPerPage(12)->setCurrentPage($page);
+    }
+    
+    public function findPaginatedByTag(Tag $tag, $page = 1)
+    {
+        //CONSTRUCTION D'UNE REQUETE  et alias pour la table produit = p
+        $queryBuilder = $this->createQueryBuilder('p')
+                ->leftJoin('p.owner', 'u')
+                ->addSelect('u')
+                ->leftJoin('p.tags', 't')
+                ->leftJoin('p.tags', 't2')                
+                ->addSelect('t')
+                ->where('t2 = :tag')
+                ->setParameter('tag', $tag)
                 ->orderBy('p.id', 'ASC');
         //lien doctrine et Pager Fanta
         $adapter = new DoctrineORMAdapter($queryBuilder);

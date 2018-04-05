@@ -1,5 +1,11 @@
 {% extends "layout_front.html.twig" %}
+
+{% block stylesheets %}
+<link href="{{asset('css/selectize.css')}}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Ajouter / Modifier un jeu{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col-6 mx-auto my-5">
@@ -9,4 +15,8 @@
             <a class="btn btn-info" href="{{ path('product') }}">Revenir au produits</a>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('js/selectize.js')}}"></script>
 {% endblock %}
