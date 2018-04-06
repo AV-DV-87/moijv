@@ -32,7 +32,13 @@ class ProductRepository extends ServiceEntityRepository {
                 ->addSelect('u')
                 ->leftJoin('p.tags', 't')
                 ->addSelect('t')
-                ->orderBy('p.id', 'ASC');
+                ->leftJoin('p.loans', 'l')
+                ->where('l.status = :status1')
+                ->orWhere('l.status = :status2')
+                ->orWhere('l.status is NULL')
+                ->setParameter('status1', 'finished')
+                ->setParameter('status2', 'refused')
+                ->orderBy('p.id', 'DESC');
         //lien doctrine et Pager Fanta
         $adapter = new DoctrineORMAdapter($queryBuilder);
         //Pager Fanta
@@ -71,8 +77,20 @@ class ProductRepository extends ServiceEntityRepository {
                 ->leftJoin('p.tags', 't2')                
                 ->addSelect('t')
                 ->where('t2 = :tag')
+                ->leftJoin('p.loans', 'l')
                 ->setParameter('tag', $tag)
-                ->orderBy('p.id', 'ASC');
+                ->orderBy('p.id', 'DESC');
+            //conditional group to permit WHERE AND(OR OR)
+            $orGroup = $queryBuilder->expr()->orX();
+            $orGroup->add($queryBuilder->expr()->eq('l.status', ':status1'));
+            $orGroup->add($queryBuilder->expr()->eq('l.status', ':status2'));
+            $orGroup->add($queryBuilder->expr()->isNull('l.status'));            
+        //RESTART of query builder
+        $queryBuilder->andWhere($orGroup)
+                     ->setParameter('status1', 'refused')
+                     ->setParameter('status2', 'finished');
+                             
+
         //lien doctrine et Pager Fanta
         $adapter = new DoctrineORMAdapter($queryBuilder);
         //Pager Fanta

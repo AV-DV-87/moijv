@@ -61,8 +61,15 @@ class User implements UserInterface, \Serializable
     //one to many créer une relation 1-n entre table product et user
     private $products;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Loan", mappedBy="loaner")
+     * @var type Collection
+     */
+    private $loans;
+    
     public function __construct() {
         $this->products = new ArrayCollection();
+        $this->loans = new ArrayCollection();
     }
     
     public function getId()
@@ -169,6 +176,15 @@ class User implements UserInterface, \Serializable
         return $this->products;
     }
 
-    
+    public function getLoans(): Collection {
+        return $this->loans;
+    }
+
+    public function setLoans(Collection $loans) {
+        $this->loans = $loans;
+        return $this;
+    }
+
+
 
 }

@@ -1,0 +1,15 @@
+{% extends "layout_front.html.twig" %}
+
+{% block title %}Emprunter un jeu{% endblock %}
+
+{% block body %}
+    Choissisez une date de fin d'emprunt
+    <div class="row">
+        <div class="col-6 mx-auto my-5">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            <a class="btn btn-info" href="{{ path('product') }}">Revenir au produits</a>
+        </div>
+    </div>
+{% endblock %}

@@ -13,7 +13,7 @@ class TagFixtures extends Fixture
         
         for($i = 0; $i < 40; $i++){
             $tag = new Tag();
-            $tag->setName('Tag'.$i);
+            $tag->setName('Tag '.$i);
             $tag->setSlug('tag-'.$i);
             
             //clé de référence pour l'utiliser dans les products fixtures

@@ -8,14 +8,14 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20180403105231 extends AbstractMigration
+class Version20180406132900 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product ADD image VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE loan DROP INDEX UNIQ_C5D30D034584665A, ADD INDEX IDX_C5D30D034584665A (product_id)');
     }
 
     public function down(Schema $schema)
@@ -23,6 +23,6 @@ class Version20180403105231 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product DROP image');
+        $this->addSql('ALTER TABLE loan DROP INDEX IDX_C5D30D034584665A, ADD UNIQUE INDEX UNIQ_C5D30D034584665A (product_id)');
     }
 }

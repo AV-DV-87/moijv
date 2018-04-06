@@ -28,6 +28,7 @@ class TagRepository extends ServiceEntityRepository {
      * 
      */
     public function getCorrespondingTag($tagName) {
+        $tagName = trim($tagName);
         $slugify = new \Cocur\Slugify\Slugify();
         $tagSlug = $slugify->slugify($tagName);
 
@@ -39,6 +40,14 @@ class TagRepository extends ServiceEntityRepository {
             $tag->setSlug($tagSlug);
         }
         return $tag;
+    }
+    
+    public function searchBySlug($slug)
+    {
+        return $this->createQueryBuilder('t')
+               ->where('t.slug LIKE :slug')
+               ->setParameter('slug', "%$slug%")                  
+               ->getQuery()->getResult();                  
     }
 
 //    /**

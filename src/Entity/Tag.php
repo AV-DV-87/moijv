@@ -30,7 +30,7 @@ class Tag
     private $slug;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="tags")
      * @var Collection
      */
     private $products;

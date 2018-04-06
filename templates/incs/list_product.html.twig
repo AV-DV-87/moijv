@@ -20,7 +20,12 @@
               <a href="{{ path(('edit_product'), {'id' : product.id}) }}" class="btn btn-success">Modifier</a>
               <a href="{{ path(('delete_product'), {'id' : product.id}) }}" class="btn btn-danger">Supprimer</a>
             </div>
+            {% elseif is_granted('ROLE_USER') %}
+            <div class="card-footer">
+              <a href="{{path(('add_loan'), {'id' : product.id})}}" class="btn btn-success">Emprunter</a>
+            </div>
             {% endif %}
+            
           </div>
         </div>
         {% endfor %}

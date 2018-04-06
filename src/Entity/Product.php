@@ -46,13 +46,20 @@ class Product {
     private $owner;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="products", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products", cascade="persist")
      * @var Collection
      */
     private $tags;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Loan", mappedBy="product")
+     * @var Loan
+     */
+    private $loans;
+    
     public function __construct() {
         $this->tags = new ArrayCollection();
+        $this->loans = new ArrayCollection();
     }
 
     /**
@@ -123,5 +130,16 @@ class Product {
         //on ajoute le produit courant au tag
         $tag->getProducts()->add($this);
     }
+    
+    public function getLoans(): Collection{
+        return $this->loans;
+    }
+
+    public function setLoans(Collection $loans) {
+        $this->loan = $loans;
+        return $this;
+    }
+
+
 
 }
